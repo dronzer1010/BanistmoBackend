@@ -16,10 +16,11 @@ router.post('/' ,function(req,res){
         startDate : req.body.date ,
         contacts : req.body.contacts,
         category : req.body.category,
-        subcategory : req.body.subcategory 
+        subcategory : req.body.subcategory ,
+        image : req.body.image
     });
 
-    newCoupon.save(function(req,res){
+    newCoupon.save(function(err,data){
         if(!err){
                 res.status(200).send({
                     success : true ,
