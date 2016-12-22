@@ -5,5 +5,16 @@ router.get('/' , function(req,res){
 	res.send('api routes here');
 });
 
+//Users Routes here
 router.use('/users' , require('./users'));
+
+//Ranks Routes here
+router.use('/ranks' , require('./ranks'));
+
+//Coupons Routes
+router.use('/coupons' , require('./coupons'));
+
+//Upload Routes
+router.use('/upload' , require('./upload'));
+
 module.exports = router;

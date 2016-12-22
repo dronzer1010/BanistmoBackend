@@ -20,7 +20,8 @@ router.post('/register' , function(req,res){
 			username : req.body.username ,
 			password : req.body.password,
 			email    : (req.body.email)?req.body.email : null,
-			phoneNumber :(req.body.phoneNumber)?req.body.phoneNumber:null
+			phoneNumber :(req.body.phoneNumber)?req.body.phoneNumber:null,
+			rank : req.body.rank
 		});
 
 		newUser.save(function(err,user){
@@ -40,7 +41,9 @@ router.post('/login' , function(req, res){
 			msg : "Invalid parameters"
 		});
 	}else{	
-		User.findOne({username : req.body.username},function(err , user){
+		User.findOne({username : req.body.username})
+			.populate('rank')
+			.exec(function(err , user){
 			if (err) throw err;
          
             if (!user) {
@@ -53,6 +56,7 @@ router.post('/login' , function(req, res){
 	                      tokenData.username = user.email;
 	                      tokenData.password = user.password;
 	                      tokenData.userType = user.userType;
+						  tokenData.rank     = user.rank;
 	                    var token = jwt.encode(tokenData, config.secret);
             			res.status(200).json({success : true , data :{
             				id : user._id ,

@@ -27,7 +27,12 @@ var Users = new Schema({
 		type : String ,
 		enum : ['admin' , 'user'],
 		default : 'user'
-	}
+	},
+    rank : {
+        type:Schema.Types.ObjectId,
+        ref:'Ranks',
+        
+    }
 },{
     timestamps: true
 });
