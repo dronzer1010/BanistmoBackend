@@ -4,6 +4,10 @@ var multer   = require('multer');
 var path     = require('path');
 var router   = express.Router();
 
+
+/**
+ * Images
+ */
 var storage =   multer.diskStorage({
   destination: function (req, file, callback) {
     callback(null, __base + 'uploads');
@@ -13,7 +17,23 @@ var storage =   multer.diskStorage({
   }
 });
 
+/**
+ * Files
+ */
+var fileStorage =   multer.diskStorage({
+  destination: function (req, file, callback) {
+    callback(null, __base + 'uploads');
+  },
+  filename: function (req, file, callback) {
+    callback(null, file.fieldname + '-' + Date.now()+path.extname(file.originalname));
+  }
+});
+
+
+
+
 var upload = multer({ storage : storage}).single('image');
+var fileUpload = multer({ storage : storage}).single('file');
 
 
 /**
@@ -30,15 +50,34 @@ router.post('/' , function(req, res , next){
                 var  tempfile = req.file.path.split('/');
                 res.status(200).send({
                     success : true ,
-                    path : 'images/'+req.file.filename
+                    path : 'file/'+req.file.filename
                 });
             }
-        });    
-            
-      
-   
+        });       
 });
 
+
+
+/**
+ * Post route for file upload
+ */
+
+router.post('/file' , function(req, res , next){
+
+       fileUpload(req,res,function(err) {
+            if(err) {
+                console.log(err);
+                return res.end("Error uploading file." , err);
+            }else{
+                var  tempfile = req.file.path.split('/');
+                res.status(200).send({
+                    success : true ,
+                    path : 'file/'+req.file.filename,
+                    documentType :req.file.mimetype
+                });
+            }
+        });       
+});
 
 
 

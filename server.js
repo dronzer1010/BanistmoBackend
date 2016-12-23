@@ -14,6 +14,7 @@ var config      = require(__base + 'app/config/database');
 mongoose.connect(config.database);
 
 app.use(logger('dev'));
+app.use(bodyParser({limit: '50mb'}));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());

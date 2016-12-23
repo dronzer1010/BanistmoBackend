@@ -17,4 +17,7 @@ router.use('/coupons' , require('./coupons'));
 //Upload Routes
 router.use('/upload' , require('./upload'));
 
+//Circulars
+router.use('/circulars' , require('./circulars'));
+
 module.exports = router;
