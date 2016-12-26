@@ -13,6 +13,7 @@ var Contact = require(__base + 'app/models/contacts');
 
 router.get('/' , function(req,res){
 	Contact.find({})
+        .populate('designation')
         .exec(function(err , data){
              if(!err){
                 res.status(200).send({
