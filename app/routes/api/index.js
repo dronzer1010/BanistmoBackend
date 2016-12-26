@@ -20,4 +20,11 @@ router.use('/upload' , require('./upload'));
 //Circulars
 router.use('/circulars' , require('./circulars'));
 
+//notices
+router.use('/notices' , require('./notices'));
+
+
+//contacts
+router.use('/contacts' , require('./contacts'));
+
 module.exports = router;
