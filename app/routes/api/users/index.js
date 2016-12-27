@@ -9,7 +9,7 @@ var User = require(__base + 'app/models/users');
 var config = require(__base + 'app/config/database');
 
 router.get('/' , function(req,res){
-	res.send('This will retrun al users');
+	res.send('This will retrun all users');
 });
 
 router.post('/register' , function(req,res){
