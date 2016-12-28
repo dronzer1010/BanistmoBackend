@@ -24,6 +24,7 @@
     "jwt-simple": "^0.5.1",
     "mongoose": "^4.7.3",
     "morgan": "^1.7.0",
-    "multer": "^1.2.1"
+    "multer": "^1.2.1",
+    "node-xlsx": "^0.7.4"
   }
 }

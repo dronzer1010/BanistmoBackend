@@ -6,31 +6,55 @@ var jwt      = require('jwt-simple');
 //Get Required Model
 
 var User = require(__base + 'app/models/users');
+var Vacation = require(__base + 'app/models/vacation');
 var config = require(__base + 'app/config/database');
 
 router.get('/' , function(req,res){
-	res.send('This will retrun all users');
+	
 });
 
 router.post('/register' , function(req,res){
 	if(!req.body.username || !req.body.password){
 		res.status(400).send({success : false , msg : "Invalid Parameters "});
 	}else{
+
+		//create user instance
 		var newUser = new User({
 			username : req.body.username ,
 			password : req.body.password,
 			email    : (req.body.email)?req.body.email : null,
 			phoneNumber :(req.body.phoneNumber)?req.body.phoneNumber:null,
-			rank : req.body.rank
+			rank : req.body.rank,
+			department:req.body.department,
+			reportsTo : (req.body.repotsTo)?req.body.reportsTo:[]
 		});
+
+
+		//create vacation instance
+
+		var newUserVacation = new Vacation({
+			username: req.body.username,
+			daysRemaining : (req.body.vacation)?req.body.vacation : 15
+		});
+
+
 
 		newUser.save(function(err,user){
 			if(!err){
-				res.status(200).send({success: true , data : user});
+				newUserVacation.save(function(err ,data){
+					if(!err){
+						res.status(200).send({success: true , data : user});
+					}else{
+						res.status(400).send({success: false , msg :err});
+					}
+				});
 			}else{
 				res.status(400).send({success: false , msg :err});
 			}
 		});
+
+
+		
 	}
 });
 
@@ -40,9 +64,12 @@ router.post('/login' , function(req, res){
 			success : false ,
 			msg : "Invalid parameters"
 		});
-	}else{	
+	}else{
+
+		var populateQuery = [{path:'rank'},{path:'department'},{path:'reportsTo'}];
+
 		User.findOne({username : req.body.username})
-			.populate('rank')
+			.populate(populateQuery)
 			.exec(function(err , user){
 			if (err) throw err;
          

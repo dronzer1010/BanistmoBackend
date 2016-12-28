@@ -3,6 +3,13 @@ var Schema = mongoose.Schema;
 var bcrypt = require('bcryptjs');
 
 var Users = new Schema({
+    firstName : {
+        type : String,
+        required : true,
+    },
+    lastName :{
+        type : String
+    },
 	username : {
 		type : String ,
 		required :  true ,
@@ -22,12 +29,15 @@ var Users = new Schema({
 	isActive : {
 		type : Boolean ,
 		default : false
-	} , 
-	userType :{
-		type : String ,
-		enum : ['admin' , 'user'],
-		default : 'user'
-	},
+	} ,
+    reportsTo:[{
+        type:Schema.Types.ObjectId,
+        ref:'Users',
+    }], 
+    department : {
+        type:Schema.Types.ObjectId,
+        ref:'Departments',
+    },
     rank : {
         type:Schema.Types.ObjectId,
         ref:'Ranks',

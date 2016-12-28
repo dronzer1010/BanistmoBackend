@@ -3,7 +3,7 @@ var mongoose = require('mongoose');
 var multer   = require('multer');
 var path     = require('path');
 var router   = express.Router();
-
+var xlsx = require('node-xlsx');
 
 /**
  * Images
@@ -70,6 +70,13 @@ router.post('/file' , function(req, res , next){
                 return res.end("Error uploading file." , err);
             }else{
                 var  tempfile = req.file.path.split('/');
+
+                if(req.file.mimetype == "application/vnd.ms-excel" || req.file.mimeType == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"){
+
+                    var obj = xlsx.parse(__base + 'uploads/'+req.file.filename);
+                    console.log(obj[0].data[0]);
+                }                
+
                 res.status(200).send({
                     success : true ,
                     path : 'file/'+req.file.filename,
