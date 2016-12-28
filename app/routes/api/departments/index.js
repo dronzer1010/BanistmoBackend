@@ -34,7 +34,7 @@ router.get('/' , function(req,res){
 
 router.post('/' , function(req, res){
     if(!req.body.department){
-        // Rank parameter  not found
+        // Rank parameter  not found!
         res.status(400).send({
             success : false ,
             msg : "Invalid Parameters"
