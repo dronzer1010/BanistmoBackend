@@ -170,7 +170,13 @@ router.post('/register/upload' ,function(req , res , next){
 						});
 						
 
-						if(!errorStatus){
+						
+
+					
+						
+					}
+
+					if(!errorStatus){
 							res.status(200).send({
 								success : true ,
 								msg: "Data set created"
@@ -181,10 +187,6 @@ router.post('/register/upload' ,function(req , res , next){
 								msg : "Error in data set creation"
 							});
 						}
-
-					
-						
-					}
 
                 
 				}else{
