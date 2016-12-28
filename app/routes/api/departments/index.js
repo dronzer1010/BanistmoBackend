@@ -5,7 +5,7 @@ var router   = express.Router();
 
 //Get Required Model
 
-var Department = require(__base + 'app/models/deparments');
+var Department = require(__base + 'app/models/departments');
 
 /**
  * GET route , get all routes
