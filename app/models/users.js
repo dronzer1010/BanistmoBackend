@@ -15,7 +15,12 @@ var Users = new Schema({
 		required :  true ,
 		unique : true
 	} ,
+    userType:{
+        type : String,
+        enum : ['admin' , 'user'],
+        default : 'user'
 
+    },
 	password : {
 		type : String ,
 		required : true

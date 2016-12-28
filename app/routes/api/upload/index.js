@@ -33,7 +33,7 @@ var fileStorage =   multer.diskStorage({
 
 
 var upload = multer({ storage : storage}).single('image');
-var fileUpload = multer({ storage : storage}).single('file');
+var fileUpload = multer({ storage : fileStorage}).single('file');
 
 
 /**
