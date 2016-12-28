@@ -41,7 +41,7 @@ router.post('/' , function(req, res){
         });
     }else{
         var newDepartment  = new Department({
-            rank : req.body.department
+            department : req.body.department
         });
 
         newDepartment .save(function(err , data){
