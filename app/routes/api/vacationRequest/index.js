@@ -90,6 +90,7 @@ router.post('/' , function(req,res){
                                             });
                                             
                                         }else{
+                                            console.log(err);
                                             return res.status(400).send({success: false, msg: err});
                                         }
                                     });
