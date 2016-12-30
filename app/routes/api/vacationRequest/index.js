@@ -32,10 +32,18 @@ router.post('/' , function(req,res){
             if(!req.body.startsOn || !req.body.endsOn || !req.body.joinsOn || !req.body.reportsTo || !req.body.vacationType){
                 return res.status(400).send({success: false, msg: 'Invalid Data'});
             }else{
-                var startDate = moment(req.body.startsOn);
-                var endDate   = moment(req.body.endsOn);
+
+
+
+                var tempStartDate = new Date(req.body.startsOn);
+                var tempEndDate   = new Date(req.body.endsOn);
+                var startDate = moment(tempStartDate);
+                var endDate   = moment(tempEndDate);
                 var noOfDays  = endDate.diff(startDate ,'days');
 
+
+                console.log(req.body.startsOn);
+                console.log(tempStartDate);
                 console.log(startDate);
                 console.log(endDate);
                 console.log('No of days requested'+noOfDays);
