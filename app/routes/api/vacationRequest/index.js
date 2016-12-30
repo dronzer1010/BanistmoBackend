@@ -103,6 +103,7 @@ router.post('/' , function(req,res){
                                         }
                                     });
                                 }else{
+                                    console.log(err);
                                     return res.status(400).send({success: false, msg: err});
                                 }
                             });
@@ -110,6 +111,7 @@ router.post('/' , function(req,res){
                             return res.status(200).send({success: false, msg: "No. of Vacations remaining is less than requested"});
                         }
                     }else{
+                        console.log(err);
                         return res.status(400).send({success: false, msg: err});
                     }
                 });
