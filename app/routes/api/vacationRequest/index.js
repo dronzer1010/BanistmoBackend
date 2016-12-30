@@ -54,7 +54,7 @@ router.post('/' , function(req,res){
 
                 console.log(decoded);
                 console.log(decoded.username);
-                Vacation.find({username : decoded.username},function(err ,data){
+                Vacation.findOne({username : decoded.username},function(err ,data){
                     if(!err){
                         console.log(data);
                         console.log('remaining days are '+data.daysRemaining);
