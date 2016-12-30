@@ -30,6 +30,9 @@ router.use('/contacts' , require('./contacts'));
 //departments
 router.use('/departments' , require('./departments'));
 
+//vacation request
+
+router.use('/vacationreq', require('./vacationRequest'));
 
 //events
 
@@ -59,5 +62,9 @@ router.get('/events' , function(req,res){
 		]
 	})
 });
+
+
+
+
 
 module.exports = router;

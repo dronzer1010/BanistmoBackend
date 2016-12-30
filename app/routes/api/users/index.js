@@ -10,6 +10,7 @@ var xlsx = require('node-xlsx');
 
 var User = require(__base + 'app/models/users');
 var Vacation = require(__base + 'app/models/vacation');
+var MobileTokens = require(__base + 'app/models/mobileTokens');
 var config = require(__base + 'app/config/database');
 
 
@@ -107,21 +108,57 @@ router.post('/login' , function(req, res){
             if (!user) {
               res.status(400).send({success: false, msg: 'Authentication failed. User not found.'});
             }else{
+
+				console.log(user.username);
             	user.comparePassword(req.body.password , function(err , isMatch){
             		if(!err && isMatch){
             			var tokenData ={};
 	                      tokenData._id = user._id;
-	                      tokenData.username = user.email;
+	                      tokenData.username = user.username;
 	                      tokenData.password = user.password;
 	                      tokenData.userType = user.userType;
-						  tokenData.rank     = user.rank;
+						  tokenData.rank     = user.rank.rank;
 	                    var token = jwt.encode(tokenData, config.secret);
-            			res.status(200).json({success : true , data :{
-            				id : user._id ,
-							email : user.email,
-            				userType : user.userType,
-            				auth_token : 'JWT '+token
-            			}});
+            			
+						if(req.body.platformName && req.body.deviceToken){
+
+							//Set and Update mobile token
+							MobileTokens.update({userId : user._id},{userId : user._id , platformName : req.body.platformName , deviceToken : req.body.deviceToken},{upsert : true},function(err,data){
+								if(!err){
+									res.status(200).json({success : true , data :{
+										id : user._id ,
+										email : user.email,
+										userType : user.userType,
+										designation : user.rank.rank,
+										department : user.department.department,
+										topic : [user.rank._id ,user.department._id],
+										auth_token : 'JWT '+token
+									}});
+								}else{
+									res.status(200).json({success : true , data :{
+										id : user._id ,
+										email : user.email,
+										userType : user.userType,
+										auth_token : 'JWT '+token,
+										msg : "Device token not set",
+										err : err
+									}});
+								}
+							});
+
+
+						}else{
+							res.status(200).json({success : true , data :{
+								id : user._id ,
+								email : user.email,
+								userType : user.userType,
+								auth_token : 'JWT '+token
+							}});
+						}
+						
+						
+						
+						
             		}else{
             			res.status(400).send({success: false, msg: 'Authentication failed.Password do not match'});
             		}
@@ -159,10 +196,23 @@ router.post('/register/upload' ,function(req , res , next){
 							rank : data_row[9],
 						});
 
-						console.log(data_row[7].split(','));
+						//console.log(data_row[7].split(','));
+
+						var newUserVacation = new Vacation({
+							username: data_row[1],
+							daysRemaining : 15
+						});
+
 						newUser.save(function(err , data){
 							if(!err){
-								console.log('user created');
+								newUserVacation.save(function(err,data){
+									if(!err){
+										console.log('User Created');
+									}else{
+										errorStatus = true;
+										console.log("Error Has Occured");
+									}
+								});
 							}else{
 								console.log(err);
 								errorStatus = true;
