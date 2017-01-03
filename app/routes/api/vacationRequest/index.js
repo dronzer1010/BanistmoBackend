@@ -172,7 +172,7 @@ router.post('/mail' , function(req,res){
         to: 'amitpsri@gmail.com', // list of receivers
         subject: 'Sample mail', // Subject line
         text: "Hello From Ravi" //, // plaintext body
-        // html: '<b>Hello world ✔</b>' // You can choose to send an HTML body instead
+        // html: '<b>Hello world ✔</b>' // You can choose to send an HTML body instead sent
     };
 
     transporter.sendMail(mailOptions, function(error, info){
