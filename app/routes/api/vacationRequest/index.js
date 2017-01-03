@@ -66,10 +66,11 @@ router.post('/' , function(req,res){
                     if(!err){
                         console.log(data);
                         console.log('remaining days are '+data.daysRemaining);
+                        var tempDays = data.daysRemaining - noOfDays;
                         if(parseInt(data.daysRemaining) >= parseInt(noOfDays)){
                             newRequest.save(function(err,vacData){
                                 if(!err){
-                                    Vacation.update({username : decoded.username},{$set:{daysRemaining : daysRemaining-noOfDays}},function(err,data){
+                                    Vacation.update({username : decoded.username},{$set:{daysRemaining : tempDays}},function(err,data){
                                         if(!err){
                                             MobileTokens.find({userId:decoded._id},function(err,user){
                                                 if(!err){
