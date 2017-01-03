@@ -6,7 +6,7 @@ var VacationRequest = new Schema({
 	username : {
         type : String ,
         required : true ,
-        unique : true
+      
     },
     userId:{
         type:Schema.Types.ObjectId,
