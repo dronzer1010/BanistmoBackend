@@ -127,8 +127,8 @@ router.post('/' , function(req,res){
 });
 
 
-var devToken='cnmc62PjWDo:APA91bHqkO3csU7Yhp5ojPdtyTPPhHCrWgRZVoyGoZF_gHzGjRBHZxbFvH6NjcDQibgjEmH6KN2SEXMF83V7ey1';
-devToken = devToken+'ir0MyBuFbSmtoBnw9LDrsoKtRkHYdMaY_Fi7adKiObVsj0XVJfH9m';
+var devToken='cczrhzZvNJg:APA91bHxEdZ4fsojaaOp3dv5J2OkZHkHnNvh6jsdk7XyO-PLG6eKaSAMJIHwCznX9UokwAxF7AVZ2SnLE6_umvI5GsW3pC39rAVvnWE7oTqQ3p5dFbTDTHpRbv2XDD1vOkSunF_nYkw7';
+
 router.get('/push' , function(req,res){
     var message = {
                           to:'/topics/585b9001e144967dd8e74d86', // required fill with device token or topics 
