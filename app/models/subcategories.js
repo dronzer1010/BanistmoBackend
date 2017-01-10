@@ -12,6 +12,9 @@ var Subcategories = new Schema({
         ref:'Categories',
         required : true ,
         
+    },
+    image : {
+        type : String
     }
 },{
     timestamps: true

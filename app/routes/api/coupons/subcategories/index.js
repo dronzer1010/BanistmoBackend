@@ -66,7 +66,8 @@ router.post('/' , function(req, res){
     }else{
         var newSubCat  = new SubCat({
             name : req.body.name,
-            category :  req.body.category
+            category :  req.body.category,
+            image : (req.body.image)?req.body.image:null
         });
 
         newSubCat .save(function(err , data){
