@@ -41,7 +41,8 @@ router.post('/' , function(req, res){
         });
     }else{
         var newCategory  = new Category({
-            category : req.body.category
+            category : req.body.category,
+            image : (req.body.image)?req.body.image:null
         });
 
         newCategory.save(function(err , data){
