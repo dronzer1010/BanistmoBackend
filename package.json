@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/dronzer1010/BanistmoBackend#readme",
   "dependencies": {
+    "aws-sdk": "^2.7.21",
     "bcryptjs": "^2.4.0",
     "body-parser": "^1.15.2",
     "cookie-parser": "^1.4.3",
@@ -27,6 +28,7 @@
     "mongoose": "^4.7.3",
     "morgan": "^1.7.0",
     "multer": "^1.2.1",
+    "multer-s3": "^2.5.0",
     "node-xlsx": "^0.7.4",
     "nodemailer": "^2.7.0",
     "nodemailer-mailgun-transport": "^1.2.4"

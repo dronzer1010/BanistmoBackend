@@ -4,18 +4,37 @@ var multer   = require('multer');
 var path     = require('path');
 var router   = express.Router();
 var xlsx = require('node-xlsx');
+var aws = require('aws-sdk');
+var multerS3 = require('multer-s3');
+var config = require(__base + 'app/config/database');
+
+
+/** Configure AWS */
+aws.config.update({
+    secretAccessKey:config.ac_main_secret,
+    accessKeyId: config.ac_secret, 
+});
+
+/** Configure S3 bucket */
+var s3 = new aws.S3();
+
 
 /**
  * Images
  */
-var storage =   multer.diskStorage({
-  destination: function (req, file, callback) {
-    callback(null, __base + 'uploads');
-  },
-  filename: function (req, file, callback) {
-    callback(null, file.fieldname + '-' + Date.now()+path.extname(file.originalname));
-  }
-});
+var upload =   multer({
+
+    storage: multerS3({
+        s3: s3,
+        bucket: 'banistmo',
+       
+        key: function (req, file, cb) {
+            console.log(file);
+            cb(null, 'images/'+file.fieldname + '-' + Date.now()+path.extname(file.originalname)); //use Date.now() for unique file keys
+        }
+    })
+
+}).single('image');
 
 /**
  * Files
@@ -32,7 +51,7 @@ var fileStorage =   multer.diskStorage({
 
 
 
-var upload = multer({ storage : storage}).single('image');
+//var upload = multer({ storage : storage}).single('image');
 var fileUpload = multer({ storage : fileStorage}).single('file');
 
 
@@ -47,10 +66,11 @@ router.post('/' , function(req, res , next){
                 console.log(err);
                 return res.end("Error uploading file." , err);
             }else{
-                var  tempfile = req.file.path.split('/');
+                
+                //var  tempfile = req.file.path.split('/');
                 res.status(200).send({
                     success : true ,
-                    path : 'file/'+req.file.filename
+                    path:req.file.location
                 });
             }
         });       

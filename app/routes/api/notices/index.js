@@ -28,6 +28,25 @@ router.get('/' , function(req,res){
         });
 });
 
+router.get('/:id' , function(req,res){
+	Notice.find({_id:req.params.id})
+        .exec(function(err , data){
+             if(!err){
+                res.status(200).send({
+                    success : true ,
+                    data : data
+                });
+            }else{
+                res.status(400).send({
+                    success :  false ,
+                    msg : err
+                });
+            }
+        });
+});
+
+
+
 /**
  * POST route , adding rank
  */
@@ -47,7 +66,7 @@ router.post('/' , function(req, res){
             title : req.body.title,
             image  : req.body.image ,
             content : req.body.content,
-            attachedDocument : req.body.attachedDocument
+            date : req.body.date
         });
 
         newNotice .save(function(err , data){

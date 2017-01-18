@@ -14,8 +14,9 @@ var Notices = new Schema({
         type : String,
         required : true
     },
-    attachedDocument : {
-        type : String
+    date :{
+        type:Date,
+        default:Date.now()
     }
            
 },{
