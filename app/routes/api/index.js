@@ -38,6 +38,10 @@ router.use('/vacationreq', require('./vacationRequest'));
 
 router.use('/events' , require('./events'));
 
+router.use('/businessunits' , require('./businessUnits'));
+
+router.use('/spartners' , require('./strategicPartners'));
+
 
 
 

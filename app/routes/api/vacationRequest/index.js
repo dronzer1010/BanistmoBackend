@@ -129,15 +129,19 @@ router.post('/' , function(req,res){
 
 var devToken='cczrhzZvNJg:APA91bHxEdZ4fsojaaOp3dv5J2OkZHkHnNvh6jsdk7XyO-PLG6eKaSAMJIHwCznX9UokwAxF7AVZ2SnLE6_umvI5GsW3pC39rAVvnWE7oTqQ3p5dFbTDTHpRbv2XDD1vOkSunF_nYkw7';
 
-router.get('/push' , function(req,res){
-    var message = {
-                          to:'/topics/585b9001e144967dd8e74d86', // required fill with device token or topics 
+
+router.post('/push' , function(req,res){
+    var username_t=req.body.username;
+    User.findOne({username:username_t},function(err,data){
+        MobileTokens.find({userId:data._id},function(err,token){
+                var message = {
+                          to:'/topics/'+token.deviceToken, // required fill with device token or topics 
                           data: {
-                              message: "Hello Hardik"
+                              message: "Sample Push Notification"
                           },
                           notification: {
                               title: 'Alert',
-                              body: "Your are assistant manager"
+                              body: "Pushed Message"
                           }
                     };
 
@@ -149,10 +153,10 @@ router.get('/push' , function(req,res){
                                                             console.log( response);
                                                             res.send(response);
                                                         }
-                                                    });             
+                                                    }); 
+        });
+    });         
 });
-
-
 
 
 router.post('/mail' , function(req,res){
