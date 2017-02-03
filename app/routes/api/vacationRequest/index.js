@@ -14,7 +14,7 @@ var VacationRequest = require(__base + 'app/models/vacationRequest');
 var MobileTokens = require(__base + 'app/models/mobileTokens');
 var Vacation = require(__base + 'app/models/vacation');
 var config = require(__base + 'app/config/database');
-
+var User = require(__base + 'app/models/users');
 
 //  Setup fcm   
 var fcm = new FCM(config.serverKey);
@@ -133,28 +133,38 @@ var devToken='cczrhzZvNJg:APA91bHxEdZ4fsojaaOp3dv5J2OkZHkHnNvh6jsdk7XyO-PLG6eKaS
 router.post('/push' , function(req,res){
     var username_t=req.body.username;
     User.findOne({username:username_t},function(err,data){
-        MobileTokens.find({userId:data._id},function(err,token){
-                var message = {
-                          to:'/topics/'+token.deviceToken, // required fill with device token or topics 
-                          data: {
-                              message: "Sample Push Notification"
-                          },
-                          notification: {
-                              title: 'Alert',
-                              body: "Pushed Message"
-                          }
-                    };
+        if(!err){
+            MobileTokens.find({userId:data._id},function(err,token){
+                    if(!err){
+                        var message = {
+                            to:'/topics/'+token.deviceToken, // required fill with device token or topics 
+                            data: {
+                                message: "Sample Push Notification"
+                            },
+                            notification: {
+                                title: 'Alert',
+                                body: "Pushed Message"
+                            }
+                        };
 
-       fcm.send(message, function(err, response){
-                                                        if (err) {
-                                                            console.log("err");
-                                                            res.send(err);
-                                                        } else {
-                                                            console.log( response);
-                                                            res.send(response);
-                                                        }
-                                                    }); 
-        });
+        fcm.send(message, function(err, response){
+                                                            if (err) {
+                                                                console.log("err");
+                                                                res.send(err);
+                                                            } else {
+                                                                console.log( response);
+                                                                res.send(response);
+                                                            }
+                                                        }); 
+                    }else{
+                        console.log(err);
+                        return res.status(400).send({success: false, msg: err});
+                    }
+            });
+        }else{
+            console.log(err);
+                        return res.status(400).send({success: false, msg: err});
+        }
     });         
 });
 
