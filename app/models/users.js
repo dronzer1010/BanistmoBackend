@@ -5,12 +5,12 @@ var bcrypt = require('bcryptjs');
 var Users = new Schema({
     firstName : {
         type : String,
-        required : true,
+        //required : true,
     },
     lastName :{
         type : String
     },
-	username : {
+	empId : {
 		type : String ,
 		required :  true ,
 		unique : true
@@ -28,17 +28,33 @@ var Users = new Schema({
 	email : {
 		type : String ,		
 	},
-	phoneNumber : {
-		type : String
-	},
+
+    businessUnit:{
+        type:Schema.Types.ObjectId,
+        ref:'BusinessUnits',
+    },
+    strategicPartner:{
+        type:Schema.Types.ObjectId,
+        ref:'StrategicPartners',
+    },
+    directManager:{
+        type:Schema.Types.ObjectId,
+        ref:'DirectManagers',
+    },
+
 	isActive : {
 		type : Boolean ,
 		default : false
 	} ,
-    reportsTo:[{
-        type:Schema.Types.ObjectId,
-        ref:'Users',
-    }], 
+    personalLocation:{
+        type:String
+    },
+    startDate:{
+        type:String
+    },
+    birthDate:{
+        type:String
+    },
     department : {
         type:Schema.Types.ObjectId,
         ref:'Departments',
@@ -47,7 +63,22 @@ var Users = new Schema({
         type:Schema.Types.ObjectId,
         ref:'Ranks',
         
+    },
+    costCenter:{
+        type:Number
+    },
+    jobGroup : {
+        type:Schema.Types.ObjectId,
+        ref:'JobGroups',
+        
+    },
+    vacationPending:{
+        type:Number
+    },
+    image : {
+        type : String
     }
+
 },{
     timestamps: true
 });
