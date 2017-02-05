@@ -5,7 +5,7 @@ var router   = express.Router();
 
 //Get Required Model
 
-var SP = require(__base + 'app/models/strategicPartner');
+var SP = require(__base + 'app/models/strategicPartners');
 
 /**
  * GET route , get all routes
