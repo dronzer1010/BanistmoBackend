@@ -51,7 +51,7 @@ router.get('/' , function(req,res){
 
 
 router.get('/:id' , function(req,res){
-	var populateQuery = [{path:'rank'},{path:'department'}];
+	var populateQuery = [{path:'rank'},{path:'department'},{path:'businessUnit'},{path:'jobGroup'},{path:'strategicPartner'},{path:'directManager'}];
 	User.findOne({_id:req.params.id})
 		.populate(populateQuery)
 		.exec(function(err,users){
