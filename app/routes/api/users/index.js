@@ -36,9 +36,9 @@ var fileUpload = multer({ storage : storage}).single('file');
 
 
 router.get('/' , function(req,res){
-	var populateQuery = [{path:'rank'},{path:'department'},{path:'reportsTo'}];
+	var populateQuery = [{path:'rank'},{path:'department'}];
 	User.find({})
-		.populate(populateQuery)
+		// /.populate(populateQuery)
 		.exec(function(err,users){
 			if(!err){
 						res.status(200).send({success: true , data : users});
@@ -48,6 +48,20 @@ router.get('/' , function(req,res){
 		});
 });
 
+
+
+router.get('/:id' , function(req,res){
+	var populateQuery = [{path:'rank'},{path:'department'}];
+	User.findOne({_id:req.params.id})
+		.populate(populateQuery)
+		.exec(function(err,users){
+			if(!err){
+						res.status(200).send({success: true , data : users});
+					}else{
+						res.status(400).send({success: false , msg :err});
+					}
+		});
+});
 router.post('/register' , function(req,res){
 	if(!req.body.username || !req.body.password){
 		res.status(400).send({success : false , msg : "Invalid Parameters "});
@@ -103,9 +117,9 @@ router.post('/login' , function(req, res){
 		});
 	}else{
 
-		var populateQuery = [{path:'rank'},{path:'department'},{path:'reportsTo'}];
+		var populateQuery = [{path:'rank'},{path:'department'}];
 
-		User.findOne({username : req.body.username})
+		User.findOne({username : req.body.empId})
 			.populate(populateQuery)
 			.exec(function(err , user){
 			if (err) throw err;
@@ -119,10 +133,9 @@ router.post('/login' , function(req, res){
             		if(!err && isMatch){
             			var tokenData ={};
 	                      tokenData._id = user._id;
-	                      tokenData.username = user.username;
+	                      tokenData.username = user.empId;
 	                      tokenData.password = user.password;
-	                      tokenData.userType = user.userType;
-						  tokenData.rank     = user.rank.rank;
+						  
 	                    var token = jwt.encode(tokenData, config.secret);
             			
 						if(req.body.platformName && req.body.deviceToken){
@@ -134,8 +147,8 @@ router.post('/login' , function(req, res){
 										id : user._id ,
 										email : user.email,
 										userType : user.userType,
-										designation : user.rank.rank,
-										department : user.department.department,
+										
+										
 										topic : [user.rank._id ,user.department._id],
 										auth_token : 'JWT '+token
 									}});
@@ -224,7 +237,7 @@ router.post('/register/upload' ,function(req , res , next){
 										if(!err){
 											if(department){
 												console.log("department  found");
-												Rank.find({rank : emp_rank},function(err,rank){
+												Rank.findOne({rank : emp_rank},function(err,rank){
 													if(!err){
 														if(rank){
 															console.log("rank found");
