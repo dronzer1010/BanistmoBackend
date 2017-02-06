@@ -36,9 +36,9 @@ var fileUpload = multer({ storage : storage}).single('file');
 
 
 router.get('/' , function(req,res){
-	var populateQuery = [{path:'rank'},{path:'department'}];
+	var populateQuery = [{path:'rank'},{path:'department'},{path:'businessUnit'},{path:'jobGroup'},{path:'strategicPartner'},{path:'directManager'}];
 	User.find({})
-		// /.populate(populateQuery)
+		.populate(populateQuery)
 		.exec(function(err,users){
 			if(!err){
 						res.status(200).send({success: true , data : users});
