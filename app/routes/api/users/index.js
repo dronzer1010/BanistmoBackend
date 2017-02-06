@@ -504,7 +504,288 @@ router.post('/register/upload' ,function(req , res , next){
 																	console.log("Error while finding job group");
 																}
 															});
+														}else{
+															console.log("Rank Not found");
+
+															var newRank = new Rank({
+																rank : emp_rank
+															});
+
+															newRank.save(function(err,rank){
+																if(!err){
+																	JobGroup.findOne({name : emp_jobgroup},function(err,jobgroup){
+																if(!err){
+																	if(jobgroup){
+																		console.log("Jobj Group found");
+																		if(emp_dm_name){
+																			DM.findOne({name : emp_dm_name},function(err,directmanager){
+																				if(!err){
+																					if(directmanager){
+
+																						var newUser = new User({
+																							empId : emp_id ,
+																							firstName : emp_firstName ,
+																							lastName : emp_lastName ,
+																							email : emp_email ,
+																							department : department._id ,
+																							userType : 'user',
+																							password:"abc123",
+																							businessUnit : emp_bu,
+																							rank : rank._id,
+																							jobGroup:jobgroup._id,
+																							strategicPartner : strategic_p._id,
+																							personalLocation : emp_location,
+																							startDate : emp_startdate,
+																							birthDate : emp_birthdate,
+																							costCenter : emp_cost_center,
+																							vacationPending : emp_vacation,
+																							directManager : directmanager._id,
+																							image : ""
+																						});
+
+																						newUser.save(function(err, user){
+																							if(!err){
+																								console.log('User created');
+																								syncFunc(index+1);
+																							}else{
+																								
+																								console.log("Error while creating User");
+																								console.log(err);
+																							}
+																						});
+																					}else{
+																						console.log("creating new direct manager");
+																						var newDirectManager = new DM({
+																							name : emp_dm_name,
+																							email : emp_dm_email
+																						});
+
+																						newDirectManager.save(function(err,directmanager){
+																							if(!err){
+																								var newUser = new User({
+																							empId : emp_id ,
+																							firstName : emp_firstName ,
+																							lastName : emp_lastName ,
+																							email : emp_email ,
+																							department : department._id ,
+																							userType : 'user',
+																							password:"abc123",
+																							businessUnit : emp_bu,
+																							rank : rank._id,
+																							jobGroup:jobgroup._id,
+																							strategicPartner : strategic_p._id,
+																							personalLocation : emp_location,
+																							startDate : emp_startdate,
+																							birthDate : emp_birthdate,
+																							costCenter : emp_cost_center,
+																							vacationPending : emp_vacation,
+																							directManager : directmanager._id,
+																							image : ""
+																						});
+
+																						newUser.save(function(err, user){
+																							if(!err){
+																								console.log('User created');
+																								syncFunc(index+1);
+																							}else{
+																								
+																								console.log("Error while creating User");
+																								console.log(err);
+																							}
+																						});
+																							}else{	
+																								console.log(err);
+																							}
+																						});
+																					}
+																				}else{
+																					console.log("Error while finding Direct Manager");
+																				}
+																			});
+																		}else{
+																			console.log("No Direct Manager");
+
+
+
+																			var newUser = new User({
+																							empId : emp_id ,
+																							firstName : emp_firstName ,
+																							lastName : emp_lastName ,
+																							email : emp_email ,
+																							department : department._id ,
+																							userType : 'user',
+																							password:"abc123",
+																							businessUnit : emp_bu,
+																							rank : rank._id,
+																							jobGroup:jobgroup._id,
+																							strategicPartner : strategic_p._id,
+																							personalLocation : emp_location,
+																							startDate : emp_startdate,
+																							birthDate : emp_birthdate,
+																							costCenter : emp_cost_center,
+																							vacationPending : emp_vacation,
+																							directManager :null,
+																							image : ""
+																						});
+
+																						newUser.save(function(err, user){
+																							if(!err){
+																								
+																								console.log('User created');
+																								syncFunc(index+1);
+																							}else{
+																								
+																								console.log("Error while creating User");
+																								console.log(err);
+																							}
+																						});
+																		}
+																	}else{
+																		var newJobGroup = new JobGroup({
+																			name : emp_jobgroup
+																		});
+																		newJobGroup.save(function(err, jobgroup){
+																			if(emp_dm_name){
+																			DM.findOne({name : emp_dm_name},function(err,directmanager){
+																				if(!err){
+																					if(directmanager){
+
+																						var newUser = new User({
+																							empId : emp_id ,
+																							firstName : emp_firstName ,
+																							lastName : emp_lastName ,
+																							email : emp_email ,
+																							department : department._id ,
+																							userType : 'user',
+																							password:"abc123",
+																							businessUnit : emp_bu,
+																							rank : rank._id,
+																							jobGroup:jobgroup._id,
+																							strategicPartner : strategic_p._id,
+																							personalLocation : emp_location,
+																							startDate : emp_startdate,
+																							birthDate : emp_birthdate,
+																							costCenter : emp_cost_center,
+																							vacationPending : emp_vacation,
+																							directManager : directmanager._id,
+																							image : ""
+																						});
+
+																						newUser.save(function(err, user){
+																							if(!err){
+																								console.log('User created');
+																								syncFunc(index+1);
+																							}else{
+																								
+																								console.log("Error while creating User");
+																								console.log(err);
+																							}
+																						});
+																					}else{
+																						console.log("creating new direct manager");
+																						var newDirectManager = new DM({
+																							name : emp_dm_name,
+																							email : emp_dm_email
+																						});
+
+																						newDirectManager.save(function(err,directmanager){
+																							if(!err){
+																								var newUser = new User({
+																							empId : emp_id ,
+																							firstName : emp_firstName ,
+																							lastName : emp_lastName ,
+																							email : emp_email ,
+																							department : department._id ,
+																							userType : 'user',
+																							password:"abc123",
+																							businessUnit : emp_bu,
+																							rank : rank._id,
+																							jobGroup:jobgroup._id,
+																							strategicPartner : strategic_p._id,
+																							personalLocation : emp_location,
+																							startDate : emp_startdate,
+																							birthDate : emp_birthdate,
+																							costCenter : emp_cost_center,
+																							vacationPending : emp_vacation,
+																							directManager : directmanager._id,
+																							image : ""
+																						});
+
+																						newUser.save(function(err, user){
+																							if(!err){
+																								console.log('User created');
+																								syncFunc(index+1);
+																							}else{
+																								
+																								console.log("Error while creating User");
+																								console.log(err);
+																							}
+																						});
+																							}else{	
+																								console.log(err);
+																							}
+																						});
+																					}
+																				}else{
+																					console.log("Error while finding Direct Manager");
+																				}
+																			});
+																		}else{
+																			console.log("No Direct Manager");
+
+
+
+																			var newUser = new User({
+																							empId : emp_id ,
+																							firstName : emp_firstName ,
+																							lastName : emp_lastName ,
+																							email : emp_email ,
+																							department : department._id ,
+																							userType : 'user',
+																							password:"abc123",
+																							businessUnit : emp_bu,
+																							rank : rank._id,
+																							jobGroup:jobgroup._id,
+																							strategicPartner : strategic_p._id,
+																							personalLocation : emp_location,
+																							startDate : emp_startdate,
+																							birthDate : emp_birthdate,
+																							costCenter : emp_cost_center,
+																							vacationPending : emp_vacation,
+																							directManager :null,
+																							image : ""
+																						});
+
+																						newUser.save(function(err, user){
+																							if(!err){
+																								
+																								console.log('User created');
+																								syncFunc(index+1);
+																							}else{
+																								
+																								console.log("Error while creating User");
+																								console.log(err);
+																							}
+																						});
+																		}
+																		});
+																	}
+
+
+																}else{
+																	console.log("Error while finding job group");
+																}
+															});
+																}else{
+																	console.log("Error while creating Rank");																}
+															});
+
 														}
+
+
+
+
+
 													}else{
 														console.log("Error while finding departments");
 													}
