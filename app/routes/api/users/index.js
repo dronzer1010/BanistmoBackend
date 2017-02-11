@@ -128,7 +128,7 @@ router.post('/login' , function(req, res){
               res.status(400).send({success: false, msg: 'Authentication failed. User not found.'});
             }else{
 
-				console.log("Platform name is "+req.body.platformName);
+				console.log("device token is "+req.body.deviceToken);
             	user.comparePassword(req.body.password , function(err , isMatch){
             		if(!err && isMatch){
             			var tokenData ={};
