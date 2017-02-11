@@ -139,7 +139,7 @@ router.post('/login' , function(req, res){
 	                    var token = jwt.encode(tokenData, config.secret);
             			
 						if(req.body.platformName && req.body.deviceToken){
-
+							console.log("Platform name is "+req.body.platformName);
 							//Set and Update mobile token
 							MobileTokens.update({userId : user._id},{userId : user._id , platformName : req.body.platformName , deviceToken : req.body.deviceToken},{upsert : true},function(err,data){
 								if(!err){
