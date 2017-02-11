@@ -117,7 +117,7 @@ router.post('/login' , function(req, res){
 		});
 	}else{
 
-		var populateQuery = [{path:'rank'},{path:'department'}];
+		var populateQuery =[{path:'rank'},{path:'department'},{path:'businessUnit'},{path:'jobGroup'},{path:'strategicPartner'},{path:'directManager'}];
 
 		User.findOne({username : req.body.empId})
 			.populate(populateQuery)
@@ -143,13 +143,15 @@ router.post('/login' , function(req, res){
 							//Set and Update mobile token
 							MobileTokens.update({userId : user._id},{userId : user._id , platformName : req.body.platformName , deviceToken : req.body.deviceToken},{upsert : true},function(err,data){
 								if(!err){
+									var t_topic = [user.rank._id ,user.department._id];
+									console.log(t_topic);
 									res.status(200).json({success : true , data :{
 										id : user._id ,
 										email : user.email,
 										userType : user.userType,
 										
 										
-										topic : [user.rank._id ,user.department._id],
+										topic : t_topic,
 										auth_token : 'JWT '+token
 									}});
 								}else{

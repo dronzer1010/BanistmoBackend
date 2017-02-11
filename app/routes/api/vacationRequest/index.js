@@ -132,7 +132,7 @@ var devToken='cczrhzZvNJg:APA91bHxEdZ4fsojaaOp3dv5J2OkZHkHnNvh6jsdk7XyO-PLG6eKaS
 
 router.post('/push' , function(req,res){
     var username_t=req.body.username;
-    User.findOne({username:username_t},function(err,data){
+    User.findOne({empId:username_t},function(err,data){
         if(!err){
             MobileTokens.find({userId:data._id},function(err,token){
                     if(!err){
