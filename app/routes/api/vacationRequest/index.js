@@ -127,7 +127,7 @@ router.post('/' , function(req,res){
 });
 
 
-var devToken='cczrhzZvNJg:APA91bHxEdZ4fsojaaOp3dv5J2OkZHkHnNvh6jsdk7XyO-PLG6eKaSAMJIHwCznX9UokwAxF7AVZ2SnLE6_umvI5GsW3pC39rAVvnWE7oTqQ3p5dFbTDTHpRbv2XDD1vOkSunF_nYkw7';
+var devToken='fnpv4ZGYITU:APA91bG-saSVcK7jFRnxkWNOvn7WObSC97hEUVJmI3O1e0uinASNVvLk3ipTpfDtjE3-l_q9Ez2dEEhe0nLBQcCz6p2Z2CzJHVPqVQDxbbKFuVUJwoLiX3DtvATP78UYijm28-kzhy3h';
 
 
 router.post('/push' , function(req,res){
@@ -137,7 +137,7 @@ router.post('/push' , function(req,res){
             MobileTokens.find({userId:data._id},function(err,token){
                     if(!err){
                         var message = {
-                            to:'/topics/'+token.deviceToken, // required fill with device token or topics 
+                            to:token.deviceToken, // required fill with device token or topics 
                             data: {
                                 message: "Sample Push Notification"
                             },
