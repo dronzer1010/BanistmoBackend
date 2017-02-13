@@ -119,7 +119,7 @@ router.post('/login' , function(req, res){
 
 		var populateQuery =[{path:'rank'},{path:'department'},{path:'businessUnit'},{path:'jobGroup'},{path:'strategicPartner'},{path:'directManager'}];
 
-		User.findOne({empId: req.body.empId})
+		User.findOne({empId: req.body.username})
 			.populate(populateQuery)
 			.exec(function(err , user){
 			if (err) throw err;
