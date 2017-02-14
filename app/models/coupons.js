@@ -26,6 +26,9 @@ var Coupons = new Schema({
     },
     startDate : {
         type : String
+    },
+    description : {
+        type:String
     }
 
 },{
