@@ -16,7 +16,7 @@ router.post('/' ,function(req,res){
         startDate : req.body.date ,
         contact : req.body.contact,
         category : req.body.category,
-        subcategory : req.body.subcategory ,
+        //subcategory : req.body.subcategory ,
         image : req.body.image,
         phone1 : req.body.phone1,
         phone2 : req.body.phone2,

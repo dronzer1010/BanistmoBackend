@@ -16,7 +16,7 @@ var Coupons = new Schema({
     subcategory : {
         type:Schema.Types.ObjectId,
         ref:'Subcategories',
-        required : true ,
+        required : false ,
     },
     image : {
         type : String
