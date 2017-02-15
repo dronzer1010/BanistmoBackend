@@ -17,7 +17,9 @@ router.post('/' ,function(req,res){
         contacts : req.body.contacts,
         category : req.body.category,
         subcategory : req.body.subcategory ,
-        image : req.body.image
+        image : req.body.image,
+        phone2 : req.body.phone2,
+        email:req.body.email
     });
 
     newCoupon.save(function(err,data){

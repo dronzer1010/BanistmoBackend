@@ -29,6 +29,12 @@ var Coupons = new Schema({
     },
     description : {
         type:String
+    },
+    phone2 :{ 
+        type:String
+    },
+    email : {
+        type:String
     }
 
 },{
