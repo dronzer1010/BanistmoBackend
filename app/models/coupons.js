@@ -21,7 +21,7 @@ var Coupons = new Schema({
     image : {
         type : String
     },
-    contacts : {
+    contact : {
         type:String
     },
     startDate : {
