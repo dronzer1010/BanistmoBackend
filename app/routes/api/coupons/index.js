@@ -14,10 +14,11 @@ router.post('/' ,function(req,res){
         title : req.body.title ,
         description : req.body.description,
         startDate : req.body.date ,
-        contacts : req.body.contacts,
+        contact : req.body.contact,
         category : req.body.category,
         subcategory : req.body.subcategory ,
         image : req.body.image,
+        phone1 : req.body.phone1,
         phone2 : req.body.phone2,
         email:req.body.email
     });

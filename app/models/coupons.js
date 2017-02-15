@@ -30,6 +30,9 @@ var Coupons = new Schema({
     description : {
         type:String
     },
+    phone1 :{ 
+        type:String
+    },
     phone2 :{ 
         type:String
     },
