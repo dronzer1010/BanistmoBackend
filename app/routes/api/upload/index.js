@@ -39,20 +39,27 @@ var upload =   multer({
 /**
  * Files
  */
-var fileStorage =   multer.diskStorage({
-  destination: function (req, file, callback) {
-    callback(null, __base + 'uploads');
-  },
-  filename: function (req, file, callback) {
-    callback(null, file.fieldname + '-' + Date.now()+path.extname(file.originalname));
-  }
-});
+
+var fileUpload =   multer({
+
+    storage: multerS3({
+        s3: s3,
+        bucket: 'banistmo',
+       
+        key: function (req, file, cb) {
+            console.log(file);
+            cb(null, 'files/'+file.fieldname + '-' + Date.now()+path.extname(file.originalname)); //use Date.now() for unique file keys
+        }
+    })
+
+}).single('file');
+
 
 
 
 
 //var upload = multer({ storage : storage}).single('image');
-var fileUpload = multer({ storage : fileStorage}).single('file');
+//var fileUpload = multer({ storage : fileStorage}).single('file');
 
 
 /**
@@ -89,21 +96,14 @@ router.post('/file' , function(req, res , next){
                 console.log(err);
                 return res.end("Error uploading file." , err);
             }else{
-                var  tempfile = req.file.path.split('/');
-
-                if(req.file.mimetype == "application/vnd.ms-excel" || req.file.mimeType == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"){
-
-                    var obj = xlsx.parse(__base + 'uploads/'+req.file.filename);
-                    console.log(obj[0].data[0]);
-                }                
-
+                
+                //var  tempfile = req.file.path.split('/');
                 res.status(200).send({
                     success : true ,
-                    path : 'file/'+req.file.filename,
-                    documentType :req.file.mimetype
+                    path:req.file.location
                 });
             }
-        });       
+        });     
 });
 
 
