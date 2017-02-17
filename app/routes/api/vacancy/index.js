@@ -44,7 +44,7 @@ router.post('/' , function(req, res){
             title : req.body.title,
             description : req.body.description,
             department : req.body.department,
-            documents : req.body.documents
+            file : req.body.file
       
         });
 
@@ -70,7 +70,7 @@ router.put('/:id' , function(req,res){
 		$set : {
 			title : req.body.title ,
 			description : req.body.description,
-            documents : req.body.documents,
+            file : req.body.file,
             department : req.body.department
 		}
 	},function(err ,data){

@@ -16,9 +16,9 @@ var Vacancy = new Schema({
         ref:'Departments',
         required:true
     },
-    documents :[{
+    file :{
         type:String
-    }]
+    }
 },{
     timestamps: true
 });
