@@ -6,7 +6,7 @@ var mailer   = require('nodemailer');
 var jwt      = require('jwt-simple');
 var mg       = require('nodemailer-mailgun-transport');
 var router   = express.Router();
-
+var helper = require('sendgrid').mail;
 
 //Get Required Model
 
@@ -29,7 +29,7 @@ router.post('/' , function(req,res){
         var decoded = jwt.decode(token, config.secret);
 
         if(decoded.userType == 'user'){
-            if(!req.body.startsOn || !req.body.endsOn || !req.body.joinsOn || !req.body.reportsTo || !req.body.vacationType){
+            if(!req.body.startsOn || !req.body.endsOn || !req.body.joinsOn || !req.body.supervisor || !req.body.vacationType){
                 return res.status(400).send({success: false, msg: 'Invalid Data'});
             }else{
 
@@ -37,6 +37,7 @@ router.post('/' , function(req,res){
 
                 var tempStartDate = new Date(req.body.startsOn);
                 var tempEndDate   = new Date(req.body.endsOn);
+                var tempJoinsOn   = new Date(req.body.joinsOn);
                 var startDate = moment(tempStartDate);
                 var endDate   = moment(tempEndDate);
                 var noOfDays  = endDate.diff(startDate ,'days');
@@ -48,54 +49,54 @@ router.post('/' , function(req,res){
                 console.log(endDate);
                 console.log('No of days requested'+noOfDays);
                 var newRequest = VacationRequest({
-                    username : decoded.username,
                     userId   : decoded._id ,
                     startsOn : req.body.startsOn,
                     endsOn   : req.body.endsOn ,
                     joinsOn  : req.body.joinsOn ,
-                    reportsTo : req.body.reportsTo,
+                    supervisor : req.body.supervisor,
                     vacationType : req.body.vacationType ,
                     noOfDays  : noOfDays, 
-                    attachedDocuments : (req.body.file)?req.body.file : null
+                    file : (req.body.file)?req.body.file : null
 
                 });
 
                 console.log(decoded);
-                console.log(decoded.username);
-                Vacation.findOne({username : decoded.username},function(err ,data){
+                //console.log(decoded.username);
+                if(tempJoinsOn.getDay()==0){
+
+                }else{
+                    User.findOne({_id : decoded._id},function(err ,data){
                     if(!err){
                         console.log(data);
                         console.log('remaining days are '+data.daysRemaining);
-                        var tempDays = data.daysRemaining - noOfDays;
-                        if(parseInt(data.daysRemaining) >= parseInt(noOfDays)){
+                        var tempDays = data.vacationPending - noOfDays;
+                        if(parseInt(data.vacationPending) >= parseInt(noOfDays)){
                             newRequest.save(function(err,vacData){
                                 if(!err){
-                                    Vacation.update({username : decoded.username},{$set:{daysRemaining : tempDays}},function(err,data){
+                                    User.update({_id : decoded._id},{$set:{vacationPending : tempDays}},function(err,user){
                                         if(!err){
-                                            MobileTokens.find({userId:decoded._id},function(err,user){
+                                            User.findOne({_id:req.body.supervisor},function(err,supervisor){
                                                 if(!err){
-                                                    var message = {
-                                                        to: user.deviceToken , // required fill with device token or topics 
-                                                        data: {
-                                                            message: "Vacation request applied"
-                                                        },
-                                                        notification: {
-                                                            title: 'Alert',
-                                                            body: 'Vacation request applied'
-                                                        }
-                                                    };
+                                                    var from_email = new helper.Email('sravik1010@gmail.com');
+                                                        var to_email = new helper.Email(supervisor.email);
+                                                        var subject = 'Vacation Request';
+                                                        var content = new helper.Content('text/plain', 'Hello '+supervisor.firstName+', '+data.firstName+' '+data.lastName+' is asking for vacation.');
+                                                        var mail = new helper.Mail(from_email, subject, to_email, content);
 
-                                                    fcm.send(message, function(err, response){
-                                                        if (err) {
-                                                            console.log(err);
-                                                        } else {
-                                                            console.log( response);
-                                                        }
+
+                                                        var sg = require('sendgrid')(config.mail_key);
+                                                        var request = sg.emptyRequest({
+                                                        method: 'POST',
+                                                        path: '/v3/mail/send',
+                                                        body: mail.toJSON(),
+                                                        });
+                                                        sg.API(request, function(error, response) {
+                                                            res.status(200).send({success :true , data : response});
+                                                            //res.status(200).send({success : true , msg : "Co Manager Created"});   
                                                     });
                                                 }else{
-                                                    console.log('Device Token Not found');
+
                                                 }
-                                                return res.status(200).send({success: true, msg: "Vacation Requested"});
                                             });
                                             
                                         }else{
@@ -116,6 +117,7 @@ router.post('/' , function(req,res){
                         return res.status(400).send({success: false, msg: err});
                     }
                 });
+                }
             }
         }else{
             return res.status(401).send({success: false, msg: 'User Token Invalid'});

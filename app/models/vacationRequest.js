@@ -3,11 +3,6 @@ var Schema = mongoose.Schema;
 
 
 var VacationRequest = new Schema({
-	username : {
-        type : String ,
-        required : true ,
-      
-    },
     userId:{
         type:Schema.Types.ObjectId,
         ref:'Users'
@@ -24,7 +19,7 @@ var VacationRequest = new Schema({
         type : Date ,
         required : true
     },
-    reportsTo : {
+    supervisor : {
         type:Schema.Types.ObjectId,
         ref:'Users'
     },
@@ -33,17 +28,24 @@ var VacationRequest = new Schema({
         enum : ['vacation' , 'maternity' , 'sick'],
         default : 'vacation'
     },
-    isApproved : {
-        type : Boolean,
-        default : false
+    approvalStatusSupervisor : {
+        type:String,
+        enum:['pending' , 'rejected' ,'accepted'],
+        default : 'pending'
     },
-    attachedDocuments :{
+    approvalStatusAdmin:{
+        type:String,
+        enum:['pending' , 'rejected' ,'accepted'],
+        default : 'pending'
+    },
+    file :{
         type:String
     },
     noOfDays :{
         type:Number,
         required : true
-    }
+    },
+
 },{
     timestamps: true
 });

@@ -31,6 +31,7 @@
     "multer-s3": "^2.5.0",
     "node-xlsx": "^0.7.4",
     "nodemailer": "^2.7.0",
-    "nodemailer-mailgun-transport": "^1.2.4"
+    "nodemailer-mailgun-transport": "^1.2.4",
+    "sendgrid": "^4.7.1"
   }
 }

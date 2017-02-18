@@ -48,7 +48,34 @@ router.get('/' , function(req,res){
 		});
 });
 
-
+router.get('/supervisor',function(req,res){
+	var token = getToken(req.headers);
+    if(token){
+        var decoded = jwt.decode(token, config.secret);
+		if(req.query.q){
+			var q= req.query.q;
+			console.log(q);
+			var re = new RegExp(q, "i")
+			var populateQuery = [{path:'rank'},{path:'department'},{path:'businessUnit'},{path:'jobGroup'},{path:'strategicPartner'},{path:'directManager'}];
+			console.log(decoded.department);
+			User.find({$or:[{firstName : {$regex : re}},{lastName : {$regex : re}}], department : decoded.department})
+				.populate(populateQuery)
+				.exec(function(err,users){
+				if(!err){
+					res.status(200).send({success: true , data : users});
+				}else{
+					res.status(400).send({success: false , msg :err});
+				}	
+			});
+		}else{
+			console.log("Notehing found");
+			res.status(200).send({success: true , data : []});
+		}
+	}else{
+		return res.status(403).send({success: false, msg: 'No token provided.'});
+	}
+	
+});
 
 router.get('/:id' , function(req,res){
 	var populateQuery = [{path:'rank'},{path:'department'},{path:'businessUnit'},{path:'jobGroup'},{path:'strategicPartner'},{path:'directManager'}];
@@ -135,7 +162,8 @@ router.post('/login' , function(req, res){
 	                      tokenData._id = user._id;
 	                      tokenData.username = user.empId;
 	                      tokenData.password = user.password;
-						  
+						  tokenData.department = user.department._id;
+						  tokenData.userType = user.userType;
 	                    var token = jwt.encode(tokenData, config.secret);
             			
 						if(req.body.platformName && req.body.deviceToken){
@@ -826,5 +854,19 @@ router.post('/register/upload' ,function(req , res , next){
         });
 });
 
-
+/**
+ *  Generic token parsing function
+ */
+var getToken = function (headers) {
+  if (headers && headers.authorization) {
+    var parted = headers.authorization.split(' ');
+    if (parted.length === 2) {
+      return parted[1];
+    } else {
+      return null;
+    }
+  } else {
+    return null;
+  }
+};
 module.exports = router;
