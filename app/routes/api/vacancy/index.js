@@ -28,6 +28,27 @@ router.get('/' , function(req,res){
         });
 });
 
+
+/**
+ * GET route , get by id routes
+ */
+router.get('/:id' , function(req,res){
+	Vacancy.find({_id : req.params.id})
+        .exec(function(err , data){
+             if(!err){
+                res.status(200).send({
+                    success : true ,
+                    data : data
+                });
+            }else{
+                res.status(400).send({
+                    success :  false ,
+                    msg : err
+                });
+            }
+        });
+});
+
 /**
  * POST route , adding rank
  */
