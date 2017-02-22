@@ -98,6 +98,7 @@ router.post('/file' , function(req, res , next){
             }else{
                 
                 //var  tempfile = req.file.path.split('/');
+                console.log(req.file);
                 res.status(200).send({
                     success : true ,
                     path:req.file.location
