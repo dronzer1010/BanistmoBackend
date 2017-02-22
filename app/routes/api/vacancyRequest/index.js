@@ -103,6 +103,7 @@ router.post('/' , function(req, res){
     if(token){
         var decoded = jwt.decode(token, config.secret);
         console.log(req.body.vacancy);
+        console.log(token);
         var newRequest = new VacancyReq({
             userDetail : decoded._id,
             vacancyDetail : req.body.vacancy,
