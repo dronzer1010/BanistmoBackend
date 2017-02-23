@@ -14,9 +14,9 @@ var VacancyReq = require(__base + 'app/models/vacancyRequest');
 router.get('/' , function(req,res){
     	var populateQuery = [{path:'userDetail'},{path:'vacancyDetail'}];
 
-	if(req.query.jobId && req.query.userId){
+	if(req.query.jobId && req.query.userId&&req.query.departmentId){
         console.log("Both query");
-        VacancyReq.find({userDetail:req.query.userId , vacancyDetail : req.query.jobId})
+        VacancyReq.find({userDetail:req.query.userId , vacancyDetail : req.query.jobId,department:departmentId})
                     .populate(populateQuery)
                     .exec(function(err,data){
                          if(!err){
@@ -32,6 +32,23 @@ router.get('/' , function(req,res){
                         }
                     });
     }else{
+        if(req.query.departmentId){
+            VacancyReq.find({department:req.query.departmentId })
+                    .populate(populateQuery)
+                    .exec(function(err,data){
+                         if(!err){
+                            res.status(200).send({
+                                success : true ,
+                                data : data
+                            });
+                        }else{
+                            res.status(400).send({
+                                success :  false ,
+                                msg : err
+                            });
+                        }
+                    });
+        }
         if(req.query.jobId){
             console.log("Job query");
 
@@ -92,6 +109,36 @@ router.get('/' , function(req,res){
     }
 });
 
+
+router.get('/status',function(req,res){
+    if(!req.query.userId || !req.query.vacancyId){
+        res.status(400).send({
+                                success :  false ,
+                                msg : "Invalid Request Parameters"
+                            });
+    }else{
+        VacancyReq.find({userDetail:req.query.userId , vacancyDetail : req.query.vacancyId},function(err,data){
+            if(!err){
+                if(!data){
+                    res.status(400).send({
+                                success :  true ,
+                                status : false
+                            });
+                }else{
+                    res.status(400).send({
+                                success :  true ,
+                                status : true
+                            });
+                }
+            }else{
+                res.status(400).send({
+                                success :  false ,
+                                msg : err
+                            });
+            }
+        });
+    }
+});
 
 
 /**
