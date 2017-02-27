@@ -28,7 +28,14 @@ router.post('/' , function(req,res){
     if (token) {
         var decoded = jwt.decode(token, config.secret);
 
+
         if(decoded.userType == 'user'){
+            console.log("Vacation Starts On "+req.body.startsOn);
+            console.log("Vacation Ends On "+req.body.endsOn);
+            console.log("Vacation Joins On "+req.body.joinsOn);
+            console.log("Supervisor "+req.body.supervisor);
+            console.log("Vacation Type "+req.body.vacationType);
+
             if(!req.body.startsOn || !req.body.endsOn || !req.body.joinsOn || !req.body.supervisor || !req.body.vacationType){
                 return res.status(400).send({success: false, msg: 'Invalid Data'});
             }else{
