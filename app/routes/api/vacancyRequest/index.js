@@ -12,7 +12,7 @@ var VacancyReq = require(__base + 'app/models/vacancyRequest');
  */
 
 router.get('/' , function(req,res){
-    	var populateQuery = [{path:'userDetail'},{path:'vacancyDetail'}];
+    	var populateQuery = [{path:'userDetail'},{path:'vacancyDetail'},{path:'department'}];
 
 	if(req.query.jobId && req.query.userId&&req.query.departmentId){
         console.log("Both query");
