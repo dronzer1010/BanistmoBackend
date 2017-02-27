@@ -87,7 +87,7 @@ router.post('/' , function(req,res){
                                             User.findOne({_id:req.body.supervisor},function(err,supervisor){
                                                 if(!err){
                                                     var from_email = new helper.Email('sravik1010@gmail.com');
-                                                        var to_email = new helper.Email(supervisor.email);
+                                                        var to_email = new helper.Email("kt.suri@gmail.com");
                                                         var subject = 'Vacation Request';
                                                         var content = new helper.Content('text/plain', 'Hello '+supervisor.firstName+', '+data.firstName+' '+data.lastName+' is asking for vacation.');
                                                         var mail = new helper.Mail(from_email, subject, to_email, content);
