@@ -74,7 +74,7 @@ router.post('/' , function(req,res){
                 if(tempJoinsOn.getDay()==0){
 
                 }else{
-                    User.findOne({_id : decoded._id},function(err ,data){
+                    User.findOne({_id : decoded._id},function(err ,user1){
                     if(!err){
                         console.log(data);
                         console.log('remaining days are '+data.daysRemaining);
@@ -89,7 +89,7 @@ router.post('/' , function(req,res){
                                                     var from_email = new helper.Email('sravik1010@gmail.com');
                                                         var to_email = new helper.Email("kt.suri@gmail.com");
                                                         var subject = 'Vacation Request';
-                                                        var content = new helper.Content('text/plain', 'Hello '+supervisor.firstName+', '+data.firstName+' '+data.lastName+' is asking for vacation.');
+                                                        var content = new helper.Content('text/plain', 'Hello '+supervisor.firstName+', '+user1.firstName+' '+user1.lastName+' is asking for vacation.');
                                                         var mail = new helper.Mail(from_email, subject, to_email, content);
 
 
