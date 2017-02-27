@@ -44,7 +44,7 @@ router.use('/spartners' , require('./strategicPartners'));
 
 router.use('/vacancies' , require('./vacancy'));
 router.use('/job-request' , require('./vacancyRequest'));
-
+router.use('/managers' , require('./directManager'));
 
 
 

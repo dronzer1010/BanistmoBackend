@@ -12,6 +12,9 @@ var DirectManagers = new Schema({
         type:String,
         unique:true,
         required:true
+    },
+    empId :{
+        type:String
     }
     
 },{
