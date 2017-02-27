@@ -12,7 +12,9 @@ var Vacancy = require(__base + 'app/models/vacancy');
  */
 
 router.get('/' , function(req,res){
+    var populateQuery = [{path:'department'}];
 	Vacancy.find({})
+        .populate(populateQuery)
         .exec(function(err , data){
              if(!err){
                 res.status(200).send({
