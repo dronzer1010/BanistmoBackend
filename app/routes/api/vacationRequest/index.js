@@ -47,7 +47,7 @@ router.post('/' , function(req,res){
                 var tempJoinsOn   = new Date(req.body.joinsOn);
                 var startDate = moment(tempStartDate);
                 var endDate   = moment(tempEndDate);
-                var weekendDays = weekendDayCount(req.body.startsOn , req.body.endsOn);
+                var weekendDays = CalculateWeekendDays(req.body.startsOn , req.body.endsOn);
                 console.log("No of weekends Found is "+ weekendDays);
                 var noOfDays  = endDate.diff(startDate ,'days');
 
@@ -225,7 +225,7 @@ var getToken = function (headers) {
 };
 
 
-function CalculateWeekendDays(fromDate, toDate){
+var CalculateWeekendDays=function(fromDate, toDate){
     var weekendDayCount = 0;
     var fromDate2 = new Date(fromDate);
     var toDate2 = new Date(toDate);
