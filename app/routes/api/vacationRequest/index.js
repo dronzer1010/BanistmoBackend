@@ -50,7 +50,7 @@ router.post('/' , function(req,res){
                 var weekendDays = CalculateWeekendDays(req.body.startsOn , req.body.endsOn);
                 console.log("No of weekends Found is "+ weekendDays);
                 var noOfDays  = endDate.diff(startDate ,'days');
-
+                //added
                 noOfDays = noOfDays-weekendDays;
                 console.log(req.body.startsOn);
                 console.log(tempStartDate);
