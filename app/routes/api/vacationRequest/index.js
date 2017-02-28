@@ -15,6 +15,7 @@ var MobileTokens = require(__base + 'app/models/mobileTokens');
 var Vacation = require(__base + 'app/models/vacation');
 var config = require(__base + 'app/config/database');
 var User = require(__base + 'app/models/users');
+var DM = require(__base + 'app/models/directManagers');
 
 //  Setup fcm   
 var fcm = new FCM(config.serverKey);
@@ -76,17 +77,18 @@ router.post('/' , function(req,res){
                 }else{
                     User.findOne({_id : decoded._id},function(err ,user1){
                     if(!err){
-                        console.log(data);
-                        console.log('remaining days are '+data.daysRemaining);
-                        var tempDays = data.vacationPending - noOfDays;
-                        if(parseInt(data.vacationPending) >= parseInt(noOfDays)){
+                        //console.log(data);
+                        //console.log('remaining days are '+data.daysRemaining);
+                        var tempDays = user1.vacationPending - noOfDays;
+                        if(parseInt(user1.vacationPending) >= parseInt(noOfDays)){
                             newRequest.save(function(err,vacData){
                                 if(!err){
                                     User.update({_id : decoded._id},{$set:{vacationPending : tempDays}},function(err,user){
                                         if(!err){
-                                            User.findOne({_id:req.body.supervisor},function(err,supervisor){
+                                            DM.findOne({_id:req.body.supervisor},function(err,supervisor){
                                                 if(!err){
-                                                    var from_email = new helper.Email('sravik1010@gmail.com');
+                                                    if(supervisor){
+                                                        var from_email = new helper.Email('sravik1010@gmail.com');
                                                         var to_email = new helper.Email("kt.suri@gmail.com");
                                                         var subject = 'Vacation Request';
                                                         var content = new helper.Content('text/plain', 'Hello '+supervisor.firstName+', '+user1.firstName+' '+user1.lastName+' is asking for vacation.');
@@ -102,9 +104,13 @@ router.post('/' , function(req,res){
                                                         sg.API(request, function(error, response) {
                                                             res.status(200).send({success :true , data : response});
                                                             //res.status(200).send({success : true , msg : "Co Manager Created"});   
-                                                    });
+                                                        });
+                                                    }else{
+                                                        return res.status(400).send({success: false, msg: "Supervisor Not found"});
+                                                    }
                                                 }else{
-
+                                                    console.log(err);
+                                            return res.status(400).send({success: false, msg: err});
                                                 }
                                             });
                                             
