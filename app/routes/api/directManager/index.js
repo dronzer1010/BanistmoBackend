@@ -13,8 +13,9 @@ var User = require(__base + 'app/models/users');
  */
 
 router.get('/' , function(req,res){
-    
+    var populateQuery = [{path:'department'}];
 	DM.find({})
+       .populate(populateQuery)
         .exec(function(err , data){
              if(!err){
                 res.status(200).send({
@@ -29,6 +30,51 @@ router.get('/' , function(req,res){
             }
         });
 });
+router.get('/my' , function(req,res){
+
+    var populateQuery = [{path:'department'}];
+    var token = getToken(req.headers);
+    if(token){
+        var decoded = jwt.decode(token, config.secret);
+        console.log(token);
+        User.findOne({_id:decoded._id},function(err,user){
+            if(!err){
+                if(user){
+                    DM.find({department : user.department})
+                        .populate(populateQuery)
+                            .exec(function(err , data){
+                                if(!err){
+                                    res.status(200).send({
+                                        success : true ,
+                                        data : data
+                                    });
+                                }else{
+                                    res.status(400).send({
+                                        success :  false ,
+                                        msg : err
+                                    });
+                                }
+                            });
+                }else{
+                    res.status(400).send({
+                        success :  false ,
+                        msg : "Invalid Token"
+                    });
+                }
+            }else{
+                res.status(400).send({
+                    success :  false ,
+                    msg : err
+                });
+            }
+        });
+    }else{
+        return res.status(403).send({success: false, msg: 'No token provided.'});
+    }
+
+    
+
+});
 
 router.get('/fix' , function(req,res){
     DM.find({})
@@ -37,7 +83,7 @@ router.get('/fix' , function(req,res){
                 data.forEach(function(item){
                     User.findOne({email:item.email},function(err,user){
                         if(!err){
-                            DM.update({email:item.email},{$set:{empId:user.empId}},function(err,result){
+                            DM.update({email:item.email},{$set:{department:user.department}},function(err,result){
                                 if(!err){
                                     console.log("Empolyee updated");
                                 }else{
@@ -54,6 +100,17 @@ router.get('/fix' , function(req,res){
 });
 
 
-
+var getToken = function (headers) {
+  if (headers && headers.authorization) {
+    var parted = headers.authorization.split(' ');
+    if (parted.length === 2) {
+      return parted[1];
+    } else {
+      return null;
+    }
+  } else {
+    return null;
+  }
+};
 
 module.exports = router;

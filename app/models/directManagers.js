@@ -15,6 +15,10 @@ var DirectManagers = new Schema({
     },
     empId :{
         type:String
+    },
+    department : {
+        type:Schema.Types.ObjectId,
+        ref:'Departments',
     }
     
 },{
