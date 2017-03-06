@@ -87,6 +87,57 @@ router.post('/' , function(req, res){
 });
 
 
+router.put('/:id' , function(req, res){
+    if(!req.body.name || !req.body.category){
+        // Rank parameter  not found
+        res.status(400).send({
+            success : false ,
+            msg : "Invalid Parameters"
+        });
+    }else{
 
+
+        SubCat.update({_id : req.params.id},{$set:{
+            name : req.body.name,
+            category :  req.body.category,
+            image : (req.body.image)?req.body.image:null
+        }},function(err,data){
+            if(!err){
+                res.status(200).send({
+                    success : true ,
+                    data : data
+                });
+            }else{
+                res.status(400).send({
+                    success :  false ,
+                    msg : err
+                });
+            }
+        });
+
+
+        
+    }
+});
+
+
+
+router.delete('/:id' , function(req,res){
+	SubCat.remove({_id:req.params.id})
+        
+        .exec(function(err , data){
+             if(!err){
+                res.status(200).send({
+                    success : true ,
+                    data : data
+                });
+            }else{
+                res.status(400).send({
+                    success :  false ,
+                    msg : err
+                });
+            }
+        });
+});
 
 module.exports = router;

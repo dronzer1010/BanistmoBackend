@@ -5,14 +5,14 @@ var router   = express.Router();
 
 //Get Required Model
 
-var Category = require(__base + 'app/models/categories');
+var NominationGroup= require(__base + 'app/models/nominationGroup');
 
 /**
  * GET route , get all routes
  */
 
 router.get('/' , function(req,res){
-	Category.find({})
+	NominationGroup.find({})
         .exec(function(err , data){
              if(!err){
                 res.status(200).send({
@@ -40,12 +40,12 @@ router.post('/' , function(req, res){
             msg : "Invalid Parameters"
         });
     }else{
-        var newCategory  = new Category({
+        var group  = new NominationGroup({
             category : req.body.category,
-            image : (req.body.image)?req.body.image:null
+            
         });
 
-        newCategory.save(function(err , data){
+        group.save(function(err , data){
             if(!err){
                 res.status(200).send({
                     success : true ,
@@ -70,9 +70,9 @@ router.put('/:id' , function(req, res){
         });
     }else{
 
-        Category.update({_id:req.params.id},{$set : {
+        NominationGroup.update({_id:req.params.id},{$set : {
             category : req.body.category,
-            image : (req.body.image)?req.body.image:null
+            
         }},function(err,data){
              if(!err){
                 res.status(200).send({
@@ -92,7 +92,7 @@ router.put('/:id' , function(req, res){
 router.delete('/:id' , function(req, res){
     
 
-        Category.remove({_id:req.params.id},function(err,data){
+        NominationGroup.remove({_id:req.params.id},function(err,data){
              if(!err){
                 res.status(200).send({
                     success : true ,
