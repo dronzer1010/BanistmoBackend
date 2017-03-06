@@ -58,7 +58,7 @@ router.get('/' , function(req,res){
 });
 
 router.get('/:id' , function(req,res){
-    Coupon.find({_id:req.params.id})
+    Coupon.findOne({_id:req.params.id})
             .exec(function(err,data){
                 if(!err){
                 res.status(200).send({
