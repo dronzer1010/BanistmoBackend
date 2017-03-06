@@ -2,7 +2,8 @@ var express  = require('express');
 var mongoose = require('mongoose');
 var router   = express.Router();
 
-
+var jwt      = require('jwt-simple');
+var config = require(__base + 'app/config/database');
 //Get Required Model
 
 var DM = require(__base + 'app/models/directManagers');
