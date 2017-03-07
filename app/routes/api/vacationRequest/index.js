@@ -40,6 +40,25 @@ router.get('/' , function(req,res){
 });
 
 
+router.get('/:id' , function(req,res){
+    var populateQuery = [{path:'userId'},{path:'supervisor'}];
+    VacationRequest.find({_id:req.params.id})
+                    .populate(populateQuery)
+                    .exec(function(err,data){
+                        if(!err){
+                            res.status(200).send({
+                                success : true ,
+                                data : data
+                            });
+                        }else{
+                            res.status(400).send({
+                                success :  false ,
+                                msg : err
+                            });
+                        }
+                    });
+});
+
 /**
  * POST route to create a vacation request
  */
