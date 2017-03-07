@@ -20,6 +20,26 @@ var DM = require(__base + 'app/models/directManagers');
 //  Setup fcm   
 var fcm = new FCM(config.serverKey);
 
+router.get('/' , function(req,res){
+    var populateQuery = [{path:'userId'},{path:'supervisor'}];
+    VacationRequest.find({})
+                    .populate(populateQuery)
+                    .exec(function(err,data){
+                        if(!err){
+                            res.status(200).send({
+                                success : true ,
+                                data : data
+                            });
+                        }else{
+                            res.status(400).send({
+                                success :  false ,
+                                msg : err
+                            });
+                        }
+                    });
+});
+
+
 /**
  * POST route to create a vacation request
  */
