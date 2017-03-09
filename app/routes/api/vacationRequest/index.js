@@ -59,6 +59,30 @@ router.get('/:id' , function(req,res){
                     });
 });
 
+
+router.post('/approve/' , function(req,res){
+    if(!req.body.vacationId || !req.body.status){
+        res.status(400).send({
+                                success :  false ,
+                                msg : "Invalid Request"
+                            });
+    }else{
+        VacationRequest.update({_id: req.body.vacationId},{$set:{approvalStatusSupervisor : req.body.status}},function(err,data){
+            if(!err){
+                res.status(200).send({
+                                success :  false ,
+                                msg : "Status Updated"
+                            });
+            }else{
+                res.status(400).send({
+                                success :  false ,
+                                msg : "Invalid Request"
+                            });   
+            }
+        });
+    }
+});
+
 /**
  * POST route to create a vacation request
  */
