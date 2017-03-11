@@ -28,6 +28,63 @@ router.get('/' , function(req,res){
         });
 });
 
+
+router.get('/:id' , function(req,res){
+	Circular.find({_id:req.params.id})
+        .exec(function(err , data){
+             if(!err){
+                res.status(200).send({
+                    success : true ,
+                    data : data
+                });
+            }else{
+                res.status(400).send({
+                    success :  false ,
+                    msg : err
+                });
+            }
+        });
+});
+
+
+
+
+router.put('/:id' , function(req, res){
+    if(!req.body.title || !req.body.path || !req.body.documentType){
+        // Rank parameter  not found
+        res.status(400).send({
+            success : false ,
+            msg : "Invalid Parameters"
+        });
+    }else{
+        
+
+
+        Circular.update({_id:req.params.id},{$set:{
+            title : req.body.title,
+            path  : req.body.path ,
+            description : req.body.description,
+            documentType : req.body.documentType}},function(err,data){
+                if(!err){
+                res.status(200).send({
+                    success : true ,
+                    data : data
+                });
+            }else{
+                res.status(400).send({
+                    success :  false ,
+                    msg : err
+                });
+            }
+            });
+
+        
+    }
+});
+
+
+
+
 /**
  * POST route , adding rank
  */
@@ -65,5 +122,22 @@ router.post('/' , function(req, res){
 
 
 
+
+router.delete('/:id' , function(req,res){
+	Circular.remove({_id:req.params.id})
+        .exec(function(err , data){
+             if(!err){
+                res.status(200).send({
+                    success : true ,
+                    data : data
+                });
+            }else{
+                res.status(400).send({
+                    success :  false ,
+                    msg : err
+                });
+            }
+        });
+});
 
 module.exports = router;

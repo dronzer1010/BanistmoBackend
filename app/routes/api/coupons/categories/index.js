@@ -34,7 +34,7 @@ router.get('/' , function(req,res){
 
 
 router.get('/:id' , function(req,res){
-	Category.find({_id:req.params.id})
+	Category.findOne({_id:req.params.id})
         .exec(function(err , data){
              if(!err){
                 res.status(200).send({
