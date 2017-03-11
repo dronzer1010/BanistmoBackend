@@ -29,6 +29,30 @@ router.get('/' , function(req,res){
 });
 
 /**
+ * GET route , get by ID routes
+ */
+
+
+router.get('/:id' , function(req,res){
+	Category.find({_id:req.params.id})
+        .exec(function(err , data){
+             if(!err){
+                res.status(200).send({
+                    success : true ,
+                    data : data
+                });
+            }else{
+                res.status(400).send({
+                    success :  false ,
+                    msg : err
+                });
+            }
+        });
+});
+
+
+
+/**
  * POST route , adding rank
  */
 
