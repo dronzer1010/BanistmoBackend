@@ -91,4 +91,60 @@ router.post('/' , function(req, res){
 
 
 
+router.put('/:id' , function(req, res){
+    if(!req.body.title || !req.body.description || !req.body.startDate || !req.body.endDate || !req.body.to || !req.body.entrance){
+        // Rank parameter  not found
+        res.status(400).send({
+            success : false ,
+            msg : "Invalid Parameters"
+        });
+    }else{
+
+
+
+        
+
+        Event.update({_id:req.params.id},{$set:{
+            title : req.body.title,
+            image  : req.body.image ,
+            description : req.body.description,
+            startDate : req.body.startDate,
+            endDate : req.body.endDate,
+            entrance : req.body.entrance,
+            to : req.body.to
+        }},function(err,data){
+             if(!err){
+                res.status(200).send({
+                    success : true ,
+                    data : data
+                });
+            }else{
+                res.status(400).send({
+                    success :  false ,
+                    msg : err
+                });
+            }
+        });
+        
+    }
+});
+
+
+router.delete('/:id' , function(req,res){
+	Event.remove({_id:req.params.id})
+        .exec(function(err , data){
+             if(!err){
+                res.status(200).send({
+                    success : true ,
+                    data : data
+                });
+            }else{
+                res.status(400).send({
+                    success :  false ,
+                    msg : err
+                });
+            }
+        });
+});
+
 module.exports = router;

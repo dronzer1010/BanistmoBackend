@@ -29,7 +29,7 @@ router.get('/' , function(req,res){
 });
 
 router.get('/:id' , function(req,res){
-	Notice.find({_id:req.params.id})
+	Notice.findOne({_id:req.params.id})
         .exec(function(err , data){
              if(!err){
                 res.status(200).send({
@@ -86,6 +86,61 @@ router.post('/' , function(req, res){
 });
 
 
+router.put('/:id' , function(req, res){
+    if(!req.body.title || !req.body.content || !req.body.image){
+        // Rank parameter  not found
+        res.status(400).send({
+            success : false ,
+            msg : "Invalid Parameters"
+        });
+    }else{
+
+
+
+        
+
+
+        Notice.update({_id:req.params.id},{$set:{
+            title : req.body.title,
+            image  : req.body.image ,
+            content : req.body.content,
+            date : req.body.date
+        }},function(err,data){
+            if(!err){
+                res.status(200).send({
+                    success : true ,
+                    data : data
+                });
+            }else{
+                res.status(400).send({
+                    success :  false ,
+                    msg : err
+                });
+            }
+        });
+
+       
+    }
+});
+
+
+
+router.delete('/:id' , function(req,res){
+	Notice.delete({_id:req.params.id})
+        .exec(function(err , data){
+             if(!err){
+                res.status(200).send({
+                    success : true ,
+                    data : data
+                });
+            }else{
+                res.status(400).send({
+                    success :  false ,
+                    msg : err
+                });
+            }
+        });
+});
 
 
 module.exports = router;

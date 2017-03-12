@@ -35,7 +35,7 @@ router.get('/' , function(req,res){
  * GET route , get by id routes
  */
 router.get('/:id' , function(req,res){
-	Vacancy.find({_id : req.params.id})
+	Vacancy.findOne({_id : req.params.id})
         .exec(function(err , data){
              if(!err){
                 res.status(200).send({
