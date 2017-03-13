@@ -5,7 +5,7 @@ router.get('/' , function(req,res){
 	res.send('api routes here');
 });
 
-//Users Routes here
+//Users Routes here 1
 router.use('/users' , require('./users'));
 
 //Ranks Routes here
