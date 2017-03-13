@@ -126,7 +126,7 @@ router.put('/:id' , function(req, res){
 
 
 router.delete('/:id' , function(req,res){
-	Notice.delete({_id:req.params.id})
+	Notice.remove({_id:req.params.id})
         .exec(function(err , data){
              if(!err){
                 res.status(200).send({
